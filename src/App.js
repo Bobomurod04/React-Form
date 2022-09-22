@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import FormComponent from './components/FormComponent';
+import List from './components/List'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      users: [],
+      user: {
+        username: '',
+        name: '',
+        email: '',
+        phone: '',
+        company: {
+          name: '',
+        },
+        address: {
+          city: '',
+        }
+      },
+    }
+  }
+
+  async componentDidMount() {
+    const data = await fetch("https://jsonplaceholder.typicode.com/users");
+    const users = await data.json();
+    this.setState({ users });
+  }
+
+  inputHandler = (e) => {
+    const {name, value} = e.target
+  }
+  submitHandler = (e) => {
+    const {name, value} = e.target
+  }
+
+  render() {
+    const { users } = this.state;
+    return (
+      <div className="app">
+        <FormComponent handler = { this.inputHandler } />
+        <List data = {users} />
+      </div>
+    )
+  }
 }
 
 export default App;
